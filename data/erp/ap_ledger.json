@@ -1,0 +1,74 @@
+[
+  {
+    "vendor_id": "V001",
+    "invoice_number": "BS-2026-0811",
+    "issue_date": "2026-08-11",
+    "gross_total": "512.70"
+  },
+  {
+    "vendor_id": "V001",
+    "invoice_number": "BS-2026-0902",
+    "issue_date": "2026-09-02",
+    "gross_total": "688.21"
+  },
+  {
+    "vendor_id": "V001",
+    "invoice_number": "BS-2026-0923",
+    "issue_date": "2026-09-23",
+    "gross_total": "430.90"
+  },
+  {
+    "vendor_id": "V002",
+    "invoice_number": "CN-2026-08",
+    "issue_date": "2026-08-31",
+    "gross_total": "1834.98"
+  },
+  {
+    "vendor_id": "V002",
+    "invoice_number": "CN-2026-09",
+    "issue_date": "2026-09-30",
+    "gross_total": "1834.98"
+  },
+  {
+    "vendor_id": "V003",
+    "invoice_number": "HB-26-1180",
+    "issue_date": "2026-07-14",
+    "gross_total": "4120.50"
+  },
+  {
+    "vendor_id": "V003",
+    "invoice_number": "HB-26-1244",
+    "issue_date": "2026-08-25",
+    "gross_total": "3870.10"
+  },
+  {
+    "vendor_id": "V004",
+    "invoice_number": "EK-2026-0917",
+    "issue_date": "2026-09-17",
+    "gross_total": "742.35"
+  },
+  {
+    "vendor_id": "V004",
+    "invoice_number": "EK-2026-0822",
+    "issue_date": "2026-08-22",
+    "gross_total": "318.03"
+  },
+  {
+    "vendor_id": "V005",
+    "invoice_number": "SH-26-3301",
+    "issue_date": "2026-08-05",
+    "gross_total": "1499.40"
+  },
+  {
+    "vendor_id": "V005",
+    "invoice_number": "SH-26-3378",
+    "issue_date": "2026-09-08",
+    "gross_total": "999.60"
+  },
+  {
+    "vendor_id": "V005",
+    "invoice_number": "SH-26-3420",
+    "issue_date": "2026-09-29",
+    "gross_total": "1499.40"
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "po_number": "PO-2026-0412",
+    "vendor_id": "V001",
+    "lines": [
+      {
+        "sku": "SKU-1001",
+        "description": "Kopierpapier A4 80g, 500 Blatt",
+        "quantity": 60,
+        "unit_price": "4.20"
+      },
+      {
+        "sku": "SKU-1007",
+        "description": "Tonerkartusche HP 26X schwarz",
+        "quantity": 4,
+        "unit_price": "89.90"
+      }
+    ]
+  },
+  {
+    "po_number": "PO-2026-0420",
+    "vendor_id": "V002",
+    "lines": [
+      {
+        "sku": "SKU-CL-01",
+        "description": "Managed Kubernetes Cluster, Oktober 2026",
+        "quantity": 1,
+        "unit_price": "1450.00"
+      },
+      {
+        "sku": "SKU-CL-07",
+        "description": "Object Storage 1 TB",
+        "quantity": 2,
+        "unit_price": "46.00"
+      }
+    ]
+  },
+  {
+    "po_number": "PO-2026-0431",
+    "vendor_id": "V003",
+    "lines": [
+      {
+        "sku": "SKU-HZ-220",
+        "description": "Eichenplatte massiv 40 mm, 2000x600",
+        "quantity": 30,
+        "unit_price": "118.00"
+      },
+      {
+        "sku": "SKU-HZ-310",
+        "description": "Buchenleiste 20x40 mm, 2 m",
+        "quantity": 200,
+        "unit_price": "3.15"
+      }
+    ]
+  },
+  {
+    "po_number": "PO-2026-0436",
+    "vendor_id": "V004",
+    "lines": [
+      {
+        "sku": "SKU-EL-55",
+        "description": "LED-Panel 60x60 cm, 4000 K",
+        "quantity": 25,
+        "unit_price": "39.50"
+      }
+    ]
+  },
+  {
+    "po_number": "PO-2026-0440",
+    "vendor_id": "V005",
+    "lines": [
+      {
+        "sku": "SKU-TR-01",
+        "description": "Komplettladung Berlin - Hamburg",
+        "quantity": 3,
+        "unit_price": "420.00"
+      }
+    ]
+  }
+]

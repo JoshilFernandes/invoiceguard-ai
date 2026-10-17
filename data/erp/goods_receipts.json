@@ -1,0 +1,50 @@
+[
+  {
+    "po_number": "PO-2026-0412",
+    "sku": "SKU-1001",
+    "quantity": 60,
+    "received_on": "2026-10-06"
+  },
+  {
+    "po_number": "PO-2026-0412",
+    "sku": "SKU-1007",
+    "quantity": 4,
+    "received_on": "2026-10-06"
+  },
+  {
+    "po_number": "PO-2026-0420",
+    "sku": "SKU-CL-01",
+    "quantity": 1,
+    "received_on": "2026-10-01"
+  },
+  {
+    "po_number": "PO-2026-0420",
+    "sku": "SKU-CL-07",
+    "quantity": 2,
+    "received_on": "2026-10-01"
+  },
+  {
+    "po_number": "PO-2026-0431",
+    "sku": "SKU-HZ-220",
+    "quantity": 24,
+    "received_on": "2026-10-09"
+  },
+  {
+    "po_number": "PO-2026-0431",
+    "sku": "SKU-HZ-310",
+    "quantity": 200,
+    "received_on": "2026-10-09"
+  },
+  {
+    "po_number": "PO-2026-0436",
+    "sku": "SKU-EL-55",
+    "quantity": 25,
+    "received_on": "2026-10-08"
+  },
+  {
+    "po_number": "PO-2026-0440",
+    "sku": "SKU-TR-01",
+    "quantity": 3,
+    "received_on": "2026-10-10"
+  }
+]

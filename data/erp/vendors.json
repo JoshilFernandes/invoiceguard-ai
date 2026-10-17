@@ -1,0 +1,57 @@
+[
+  {
+    "vendor_id": "V001",
+    "name": "Bürobedarf Schulz GmbH",
+    "vat_id": "DE811234567",
+    "iban": "DE97200400600123456789",
+    "city": "Hamburg",
+    "street": "Steindamm 41",
+    "postal_code": "20099",
+    "created": "2021-03-02",
+    "payment_terms_days": 30
+  },
+  {
+    "vendor_id": "V002",
+    "name": "CloudNord Hosting GmbH",
+    "vat_id": "DE245678901",
+    "iban": "DE31860555921090057812",
+    "city": "Leipzig",
+    "street": "Karl-Liebknecht-Str. 9",
+    "postal_code": "04107",
+    "created": "2022-07-15",
+    "payment_terms_days": 14
+  },
+  {
+    "vendor_id": "V003",
+    "name": "Holzhandel Brandenburg KG",
+    "vat_id": "DE276543210",
+    "iban": "DE48160500003520014455",
+    "city": "Potsdam",
+    "street": "Zeppelinstr. 128",
+    "postal_code": "14471",
+    "created": "2020-01-20",
+    "payment_terms_days": 30
+  },
+  {
+    "vendor_id": "V004",
+    "name": "Elektro Krüger GmbH",
+    "vat_id": "DE301122334",
+    "iban": "DE36100500000190334455",
+    "city": "Berlin",
+    "street": "Sonnenallee 210",
+    "postal_code": "12059",
+    "created": "2019-11-11",
+    "payment_terms_days": 21
+  },
+  {
+    "vendor_id": "V005",
+    "name": "Spedition Havelland GmbH",
+    "vat_id": "DE287766554",
+    "iban": "DE76160620730000778899",
+    "city": "Berlin",
+    "street": "Am Juliusturm 40",
+    "postal_code": "13599",
+    "created": "2018-05-04",
+    "payment_terms_days": 30
+  }
+]
