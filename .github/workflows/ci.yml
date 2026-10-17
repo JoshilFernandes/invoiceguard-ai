@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check src scripts tests evals && ruff format --check src scripts tests evals
+      - name: Unit & integration tests
+        run: pytest
+      - name: Eval gate (routing, extraction, fraud recall, zero unsafe auto-approvals)
+        run: python evals/run_evals.py
+      - name: Publish eval report
+        if: always() && matrix.python-version == '3.12'
+        run: cat evals/report.md >> "$GITHUB_STEP_SUMMARY"
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t invoiceguard-ai .
+      - name: Smoke test container
+        run: |
+          docker run -d -p 8000:8000 --name ig invoiceguard-ai
+          for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 1; done
+          curl -sf -X POST localhost:8000/api/demo/load-samples > /dev/null
+          curl -sf localhost:8000/api/stats
