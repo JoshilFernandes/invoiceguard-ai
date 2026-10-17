@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>InvoiceGuard AI — Review Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f6f4ee; --card: #fffdf8; --ink: #1c2430; --muted: #6b7380; --line: #e2ddd0;
+    --blue: #1f4e79; --green: #2f7a4a; --amber: #b7791f; --red: #b23a3a; --chip: #efeadc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#12161c; --card:#1a2029; --ink:#e7e3d8; --muted:#97a0ad; --line:#2a323e; --blue:#7fb0e0; --green:#6fc28f; --amber:#e3b062; --red:#ee8080; --chip:#232b36; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:14px/1.45 "IBM Plex Sans", system-ui, sans-serif; }
+  .num, code, .mono { font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  header { display:flex; align-items:center; gap:16px; padding:14px 22px; border-bottom:1px solid var(--line); background:var(--card); position:sticky; top:0; z-index:2; }
+  header h1 { font-size:17px; margin:0; letter-spacing:.2px; }
+  header h1 span { color:var(--blue); }
+  header .sub { color:var(--muted); font-size:12px; }
+  header .actions { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
+  button, .btn { font:inherit; border:1px solid var(--line); background:var(--card); color:var(--ink); padding:7px 12px; border-radius:6px; cursor:pointer; }
+  button.primary { background:var(--blue); color:#fff; border-color:var(--blue); }
+  button.approve { background:var(--green); color:#fff; border-color:var(--green); }
+  button.reject { background:var(--red); color:#fff; border-color:var(--red); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; padding:14px 22px 0; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .kpi b { display:block; font:600 20px "IBM Plex Mono", monospace; }
+  .kpi small { color:var(--muted); }
+  main { display:grid; grid-template-columns:minmax(300px, 380px) 1fr; gap:16px; padding:14px 22px 30px; }
+  .panel { background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .panel h2 { font-size:12px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin:0; padding:12px 14px; border-bottom:1px solid var(--line); }
+  .filters { display:flex; gap:6px; padding:10px 14px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .filters button { padding:4px 9px; font-size:12px; }
+  .filters button.on { background:var(--ink); color:var(--card); }
+  .row { padding:11px 14px; border-bottom:1px solid var(--line); cursor:pointer; display:grid; grid-template-columns:1fr auto; gap:2px 8px; }
+  .row:hover, .row.sel { background:var(--chip); }
+  .row .who { font-weight:600; }
+  .row .meta { color:var(--muted); font-size:12px; }
+  .pill { font-size:11px; padding:2px 8px; border-radius:99px; white-space:nowrap; align-self:start; justify-self:end; }
+  .s-posted { background:color-mix(in srgb, var(--green) 18%, transparent); color:var(--green); }
+  .s-awaiting_review { background:color-mix(in srgb, var(--amber) 20%, transparent); color:var(--amber); }
+  .s-rejected { background:color-mix(in srgb, var(--red) 16%, transparent); color:var(--red); }
+  .detail { padding:18px 20px; }
+  .empty { color:var(--muted); padding:40px; text-align:center; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .box { border:1px solid var(--line); border-radius:8px; padding:12px 14px; }
+  .box h3 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); }
+  dl { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:0; }
+  dt { color:var(--muted); } dd { margin:0; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:500; font-size:12px; }
+  td.r, th.r { text-align:right; }
+  .issue { padding:7px 10px; border-left:3px solid var(--amber); background:var(--chip); border-radius:4px; margin:6px 0; font-size:13px; }
+  .issue.error, .issue.security { border-color:var(--red); }
+  .issue code { font-size:11px; color:var(--muted); display:block; }
+  .risk { display:flex; align-items:center; gap:10px; }
+  .bar { flex:1; height:8px; background:var(--chip); border-radius:99px; overflow:hidden; }
+  .bar i { display:block; height:100%; }
+  .signal { display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:4px 0; border-bottom:1px dashed var(--line); }
+  .signal b { font-family:"IBM Plex Mono", monospace; color:var(--red); }
+  .title { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+  .title h2 { margin:0; padding:0; border:0; font-size:20px; text-transform:none; letter-spacing:0; color:var(--ink); }
+  .title .amount { margin-left:auto; font:600 22px "IBM Plex Mono", monospace; }
+  .decision { display:flex; gap:8px; align-items:center; margin:14px 0; padding:12px; border:1px dashed var(--amber); border-radius:8px; flex-wrap:wrap; }
+  .decision input { flex:1; min-width:180px; padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font:inherit; }
+  .timeline { font-size:12.5px; }
+  .timeline div { display:grid; grid-template-columns:80px 140px 1fr; gap:8px; padding:4px 0; border-bottom:1px dashed var(--line); }
+  .timeline .h { color:var(--muted); font-family:"IBM Plex Mono", monospace; font-size:11px; overflow:hidden; text-overflow:ellipsis; }
+  .section { margin-top:14px; }
+  #toast { position:fixed; bottom:18px; right:18px; background:var(--ink); color:var(--card); padding:10px 14px; border-radius:8px; opacity:0; transition:.2s; }
+  #toast.show { opacity:1; }
+  @media (max-width: 900px) { main, .grid2 { grid-template-columns:1fr; } .kpis { grid-template-columns:repeat(2,1fr); } header { flex-wrap:wrap; } }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Invoice<span>Guard</span> AI</h1>
+    <div class="sub">Agentic accounts payable · EN 16931 / XRechnung · <span id="extractor" class="mono"></span></div>
+  </div>
+  <div class="actions">
+    <label class="btn">Upload invoice<input id="file" type="file" accept=".pdf,.xml,.eml,.txt" hidden /></label>
+    <button id="demo" class="primary">Load 10 demo documents</button>
+  </div>
+</header>
+
+<section class="kpis" id="kpis"></section>
+
+<main>
+  <section class="panel">
+    <h2>Inbox</h2>
+    <div class="filters" id="filters">
+      <button data-f="" class="on">All</button>
+      <button data-f="awaiting_review">Needs review</button>
+      <button data-f="posted">Posted</button>
+      <button data-f="rejected">Rejected</button>
+    </div>
+    <div id="list"><div class="empty">No invoices yet — upload one or load the demo set.</div></div>
+  </section>
+  <section class="panel"><div id="detail" class="detail"><div class="empty">Select an invoice to see what the agent found.</div></div></section>
+</main>
+<div id="toast"></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const eur = (v) => v == null ? "—" : Number(v).toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+const label = { posted: "Posted", awaiting_review: "Needs review", rejected: "Rejected", processing: "Processing" };
+let filter = "", selected = null;
+
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2600); }
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || r.statusText);
+  return r.json();
+}
+
+async function refresh() {
+  const [stats, rows] = await Promise.all([api("/api/stats"), api("/api/invoices" + (filter ? "?status=" + filter : ""))]);
+  $("#kpis").innerHTML = [
+    ["Processed", stats.total], ["Posted", stats.posted], ["Needs review", stats.awaiting_review],
+    ["Rejected", stats.rejected], ["Straight-through", Math.round(stats.straight_through_rate * 100) + "%"],
+  ].map(([k, v]) => `<div class="kpi"><b>${v}</b><small>${k}</small></div>`).join("");
+  $("#list").innerHTML = rows.length ? rows.map((r) => `
+    <div class="row ${r.case_id === selected ? "sel" : ""}" data-id="${r.case_id}">
+      <span class="who">${esc(r.seller || r.filename)}</span>
+      <span class="pill s-${r.status}">${label[r.status] || r.status}</span>
+      <span class="meta mono">${esc(r.invoice_number || r.filename)} · ${eur(r.gross_total)}</span>
+      <span class="meta">${r.risk_score != null ? "risk " + r.risk_score : ""}</span>
+    </div>`).join("") : `<div class="empty">Nothing here.</div>`;
+  document.querySelectorAll(".row").forEach((el) => el.onclick = () => show(el.dataset.id));
+}
+
+function riskColor(score) { return score >= 60 ? "var(--red)" : score >= 30 ? "var(--amber)" : "var(--green)"; }
+
+async function show(id) {
+  selected = id;
+  const [c, audit] = await Promise.all([api("/api/invoices/" + id), api(`/api/invoices/${id}/audit`)]);
+  const inv = c.invoice || {};
+  const issues = c.issues.map((i) => `<div class="issue ${i.severity} ${i.category}"><code>${esc(i.code)}</code>${esc(i.message)}</div>`).join("") || "<div class='meta'>No issues found.</div>";
+  const lines = (inv.lines || []).map((l) => `<tr><td>${esc(l.sku || "")}</td><td>${esc(l.description)}</td><td class="r num">${l.quantity}</td><td class="r num">${eur(l.unit_price)}</td><td class="r num">${l.vat_rate}%</td><td class="r num">${eur(l.net_amount)}</td></tr>`).join("");
+  const match = c.match_rows.map((m) => `<tr><td>${m.line}</td><td>${esc(m.description)}</td><td class="r num">${m.invoiced_qty} / ${m.received_qty ?? "—"}</td><td class="r num">${m.invoiced_price} / ${m.po_price ?? "—"}</td><td>${esc(m.status)}</td></tr>`).join("");
+  const signals = c.risk_signals.map((s) => `<div class="signal"><span>${esc(s.detail)}</span><b>+${s.weight}</b></div>`).join("");
+  const risk = c.risk_score ?? 0;
+  $("#detail").innerHTML = `
+    <div class="title">
+      <h2>${esc(inv.seller?.name || c.filename)}</h2>
+      <span class="pill s-${c.status}">${label[c.status] || c.status}</span>
+      <span class="amount">${eur(inv.gross_total)}</span>
+    </div>
+    <div class="meta">${esc(c.filename)} · ${c.case_id} · document type <b>${esc(c.doc_type)}</b> · source <span class="mono">${esc(c.source || "—")}</span>${c.attempts > 1 ? " · self-repaired after " + (c.attempts - 1) + " re-read(s)" : ""}</div>
+    ${c.status === "awaiting_review" ? `
+    <div class="decision">
+      <b>Your decision:</b>
+      <input id="comment" placeholder="Comment for the audit trail (e.g. 'Called vendor, bank change confirmed')" />
+      <button class="approve" id="ok">Approve & post</button>
+      <button class="reject" id="no">Reject</button>
+    </div>` : ""}
+    <div class="section box"><h3>Why this route</h3>${c.reasons.map((r) => `<div>• ${esc(r)}</div>`).join("")}</div>
+    ${inv.invoice_number ? `
+    <div class="grid2 section">
+      <div class="box"><h3>Invoice</h3><dl>
+        <dt>Number</dt><dd class="mono">${esc(inv.invoice_number)}</dd>
+        <dt>Issued / due</dt><dd class="mono">${esc(inv.issue_date)} / ${esc(inv.due_date || "—")}</dd>
+        <dt>PO</dt><dd class="mono">${esc(inv.purchase_order || "—")}</dd>
+        <dt>Seller VAT ID</dt><dd class="mono">${esc(inv.seller?.vat_id || "—")}</dd>
+        <dt>IBAN</dt><dd class="mono">${esc(inv.iban || "—")}</dd>
+        <dt>Net / VAT</dt><dd class="mono">${eur(inv.net_total)} / ${eur(inv.vat_total)}</dd>
+      </dl></div>
+      <div class="box"><h3>Risk</h3>
+        <div class="risk"><div class="bar"><i style="width:${risk}%;background:${riskColor(risk)}"></i></div><b class="mono">${risk}/100</b></div>
+        ${signals || "<div class='meta' style='margin-top:8px'>No risk signals.</div>"}
+      </div>
+    </div>
+    <div class="section box"><h3>Line items</h3><table><tr><th>Item</th><th>Description</th><th class="r">Qty</th><th class="r">Unit</th><th class="r">VAT</th><th class="r">Net</th></tr>${lines}</table></div>
+    ${match ? `<div class="section box"><h3>3-way match (invoice / goods receipt / PO)</h3><table><tr><th>#</th><th>Line</th><th class="r">Qty inv / rec</th><th class="r">Price inv / PO</th><th>Status</th></tr>${match}</table></div>` : ""}` : ""}
+    <div class="section box"><h3>Checks</h3>${issues}</div>
+    ${c.has_xrechnung ? `<div class="section"><a class="btn" href="/api/invoices/${c.case_id}/xrechnung">Download XRechnung (UBL) XML</a></div>` : ""}
+    <div class="section box timeline"><h3>Audit trail (hash-chained)</h3>${audit.map((a) => `<div><span class="mono">${a.ts.slice(11, 19)}</span><span>${esc(a.event)} · ${esc(a.actor)}</span><span class="h">${a.hash}</span></div>`).join("")}</div>`;
+  if (c.status === "awaiting_review") {
+    const send = async (approve) => {
+      try {
+        await api(`/api/invoices/${id}/decision`, { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ approve, reviewer: "ap-clerk", comment: $("#comment").value || null }) });
+        toast(approve ? "Approved — posted to ERP and XRechnung generated" : "Rejected");
+        await refresh(); await show(id);
+      } catch (e) { toast(e.message); }
+    };
+    $("#ok").onclick = () => send(true);
+    $("#no").onclick = () => send(false);
+  }
+  refresh();
+}
+
+$("#filters").onclick = (e) => {
+  if (!e.target.dataset || e.target.dataset.f === undefined) return;
+  filter = e.target.dataset.f;
+  document.querySelectorAll("#filters button").forEach((b) => b.classList.toggle("on", b === e.target));
+  refresh();
+};
+$("#demo").onclick = async () => {
+  $("#demo").disabled = true;
+  try { const r = await api("/api/demo/load-samples", { method: "POST" }); toast(`Processed ${r.length} documents`); await refresh(); }
+  catch (e) { toast(e.message); } finally { $("#demo").disabled = false; }
+};
+$("#file").onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const fd = new FormData(); fd.append("file", f);
+  try { const r = await api("/api/invoices", { method: "POST", body: fd }); toast("Processed " + f.name); await refresh(); show(r.case_id); }
+  catch (err) { toast(err.message); }
+  e.target.value = "";
+};
+api("/health").then((h) => $("#extractor").textContent = "extractor: " + h.extractor);
+refresh();
+</script>
+</body>
+</html>
