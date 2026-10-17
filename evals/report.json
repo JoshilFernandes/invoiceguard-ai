@@ -1,0 +1,105 @@
+{
+  "metrics": {
+    "extractor": "rules",
+    "cases": 10,
+    "routing_accuracy": 1.0,
+    "field_accuracy": 1.0,
+    "flag_recall": 1.0,
+    "unsafe_auto_approvals": 0,
+    "straight_through_rate": 0.3,
+    "total_seconds": 0.28,
+    "audit_chain_valid": true
+  },
+  "cases": [
+    {
+      "file": "01_clean_office_supplies.pdf",
+      "expected": "auto_approve",
+      "got": "auto_approve",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 46
+    },
+    {
+      "file": "02_xrechnung_cloud_hosting.xml",
+      "expected": "auto_approve",
+      "got": "auto_approve",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 30
+    },
+    {
+      "file": "03_vat_miscalculated.pdf",
+      "expected": "human_review",
+      "got": "human_review",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 28
+    },
+    {
+      "file": "04_bank_change_fraud.eml",
+      "expected": "human_review",
+      "got": "human_review",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 27
+    },
+    {
+      "file": "05_duplicate_invoice.pdf",
+      "expected": "reject",
+      "got": "reject",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 24
+    },
+    {
+      "file": "06_price_and_quantity_variance.pdf",
+      "expected": "human_review",
+      "got": "human_review",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 24
+    },
+    {
+      "file": "07_prompt_injection.pdf",
+      "expected": "human_review",
+      "got": "human_review",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 27
+    },
+    {
+      "file": "08_unknown_vendor_no_po.pdf",
+      "expected": "human_review",
+      "got": "human_review",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 28
+    },
+    {
+      "file": "09_delivery_note.pdf",
+      "expected": "reject",
+      "got": "reject",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 19
+    },
+    {
+      "file": "10_zugferd_cii_toner.xml",
+      "expected": "auto_approve",
+      "got": "auto_approve",
+      "pass": true,
+      "wrong_fields": [],
+      "missed_flags": [],
+      "latency_ms": 29
+    }
+  ]
+}
