@@ -44,6 +44,10 @@ InvoiceGuard is a reference implementation of how an AI agent should handle that
 
 ## Architecture
 
+![InvoiceGuard architecture](docs/architecture.png)
+
+<details><summary>Same flow as a Mermaid diagram</summary>
+
 ```mermaid
 flowchart LR
     subgraph Intake
@@ -68,6 +72,8 @@ flowchart LR
     H -- reject --> R
     P & R --> L[(hash-chained<br/>audit log)]
 ```
+
+</details>
 
 Each box is a LangGraph node; state is checkpointed per case (`thread_id`), so a case waiting for a reviewer is just a paused graph that any process — the API, the UI, the MCP server or a fresh worker — can resume with `Command(resume=...)`.
 
