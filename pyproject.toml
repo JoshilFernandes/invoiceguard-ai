@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "invoiceguard-ai"
+version = "1.0.0"
+description = "Agentic accounts-payable automation for German e-invoicing (EN 16931 / XRechnung) built on LangGraph"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Joshil Fernandes", email = "joshilfernandes@gmail.com" }]
+requires-python = ">=3.11"
+keywords = ["langgraph", "langchain", "agents", "mcp", "e-invoicing", "xrechnung", "zugferd", "accounts-payable", "human-in-the-loop"]
+dependencies = [
+  "langgraph>=1.0",
+  "langgraph-checkpoint-sqlite>=2.0",
+  "langchain>=1.0",
+  "langchain-core>=1.0",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "python-multipart>=0.0.9",
+  "pydantic>=2.7",
+  "pypdf>=5.0",
+  "fastmcp>=2.10",
+]
+
+[project.optional-dependencies]
+groq = ["langchain-groq>=0.3"]
+openai = ["langchain-openai>=0.3"]
+anthropic = ["langchain-anthropic>=0.3"]
+ollama = ["langchain-ollama>=0.3"]
+dev = ["pytest>=8", "httpx>=0.27", "ruff>=0.6", "reportlab>=4.0"]
+
+[project.scripts]
+invoiceguard = "invoiceguard.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/invoiceguard"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 160
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501", "B008"]

@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    env_file: [{ path: .env, required: false }]
+    volumes: ["invoiceguard-state:/var/lib/invoiceguard"]
+
+  mcp:
+    build: .
+    command: ["python", "-m", "invoiceguard.mcp_server", "--http", "8765"]
+    ports: ["8765:8765"]
+    env_file: [{ path: .env, required: false }]
+    volumes: ["invoiceguard-state:/var/lib/invoiceguard"]
+
+volumes:
+  invoiceguard-state:
